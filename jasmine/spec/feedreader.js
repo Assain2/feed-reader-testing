@@ -101,10 +101,9 @@ $(function() {
       });
 
       it('should contain at least one entry', function(done) {
-         entry = $('.entry').size();
-         feed = $('.feed');
-         expect(feed.entry).not.toBe(0);
-         done();
+          entry = $('.feed .entry').size();
+          expect(entry).not.toBe(0);
+          done();
       });
 
   });
@@ -121,10 +120,10 @@ $(function() {
       beforeEach(function(done) {
           loadFeed(0, function() {
               initEntry = $('.feed').html();
-              loadFeed(1  , function() {
+              loadFeed(1, function() {
                 loadedEntry = $('.feed').html();
-              });
-              done();
+                done();
+              });  
           });
       });
 
