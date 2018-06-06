@@ -32,10 +32,10 @@ $(function() {
          * and that the URL is not empty.
          */
         it('urls are defined and not empty', function() {
-            for (var i = 0; i < allFeeds.length; i++) {
-               expect(allFeeds[i].url).toBeDefined();
-               expect(allFeeds[i].url).toContain('http');
-             }
+            allFeeds.forEach(function(feed) {
+              expect(feed.url).toBeDefined();
+              expect(feed.url).toContain('http');
+            });
          });
 
         /* This test loops through each feed
@@ -43,10 +43,10 @@ $(function() {
          * and that the name is not empty.
          */
          it('names are defined and not empty', function() {
-             for (var i = 0; i < allFeeds.length; i++) {
-               expect(allFeeds[i].name).toBeDefined();
-               expect(allFeeds[i].name).not.toBe('');
-             }
+             allFeeds.forEach(function(feed) {
+               expect(feed.name).toBeDefined();
+               expect(feed.name).not.toBe('');
+             });
          });
     });
 
@@ -65,7 +65,7 @@ $(function() {
          * hiding/showing of the menu element.
          */
          it('is hidden by default', function() {
-            expect(menu.css('transform')).toBe('matrix(1, 0, 0, 1, -192, 0)');
+            expect(body.hasClass("menu-hidden")).toBe(true);
          });
 
          /* This test ensures the menu changes
@@ -88,7 +88,7 @@ $(function() {
      * on the main loadFeed() functionality
      */
     describe('Initial Entries', function() {
-      var entry;
+      var entry, feed;
 
       /* This test ensures when the loadFeed
        * function is called and completes its work, there is at least
@@ -102,7 +102,8 @@ $(function() {
 
       it('should contain at least one entry', function(done) {
          entry = $('.entry').size();
-         expect(entry).not.toBe(0);
+         feed = $('.feed');
+         expect(feed.entry).not.toBe(0);
          done();
       });
 
@@ -112,22 +113,23 @@ $(function() {
      * on the feed content
      */
     describe('New Feed Selection', function() {
-      var entry;
+      var initEntry, loadedEntry
 
       /* This test ensures when a new feed is loaded
        * by the loadFeed function that the content actually changes.
        */
       beforeEach(function(done) {
           loadFeed(0, function() {
+              initEntry = $('.feed').html();
+              loadFeed(1  , function() {
+                loadedEntry = $('.feed').html();
+              });
               done();
           });
       });
 
       it('should update the content on load', function(done) {
-          entry = $('.entry')
-          for (var i = 0; i < entry.length; i++) {
-              expect(entry[i].textContent).not.toBe('');
-          }
+          expect(loadedEntry).not.toEqual(initEntry);
           done();
       });
     });
